@@ -432,7 +432,7 @@
                             "sslCertificate": {
                                 "id": "[concat(variables('apwResourceId'), '/sslCertificates/', variables('agwName'), '-ssl-certificate')]"
                             },
-                            "hostName": "online-ause.australiasoutheast.cloudapp.azure.com",
+                            "hostName": "online-ause.faister.com",
                             "hostNames": [
                             ],
                             "requireServerNameIndication": true
