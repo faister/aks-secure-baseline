@@ -21,15 +21,22 @@
                 "westeurope",
                 "japaneast",
                 "southeastasia",
-                "australiaeast"
+                "australiaeast",
+                "australiasoutheast"
             ],
             "metadata": {
                 "description": "The spokes's regional affinity. All resources tied to this spoke will also be homed in this region.  The network team maintains this approved regional list which is a subset of zones with Availability Zone support."
             }
-        }
+        },
+        "spokeId": {
+            "type": "string",
+            "metadata": {
+                "description": "The spoke Id, e.g., online-aueast"
+            }
+        }        
     },
     "variables": {
-        "orgAppId": "BU0001A0008",
+        "orgAppId": "[parameters('spokeId')]",
         "clusterVNetName": "[concat('vnet-hub-spoke-', variables('orgAppId'), '-00')]",
 
         "routeTableName": "[concat('route-', variables('clusterVNetName'), '-clusternodes-to-hub')]",

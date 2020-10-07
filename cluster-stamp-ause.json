@@ -44,7 +44,7 @@
             }
         },
         "location": {
-            "defaultValue": "australiaeast",
+            "defaultValue": "australiasoutheast",
             "type": "string",
             "allowedValues": [
                 "centralus",
@@ -65,7 +65,7 @@
             }
         },
         "geoRedundancyLocation": {
-            "defaultValue": "australiasoutheast",
+            "defaultValue": "australiaeast",
             "type": "string",
             "allowedValues": [
                 "eastus2",
@@ -253,7 +253,7 @@
                 {
                     "type": "A",
                     "apiVersion": "2018-09-01",
-                    "name": "bu0001a0008-00",
+                    "name": "online-ause",
                     "dependsOn": [
                         "[resourceId('Microsoft.Network/privateDnsZones', 'aks-ingress.contoso.com')]"
                     ],
@@ -261,7 +261,7 @@
                         "ttl": 3600,
                         "aRecords": [
                             {
-                                "ipv4Address": "10.240.4.4"
+                                "ipv4Address": "10.241.4.4"
                             }
                         ]
                     }
@@ -300,11 +300,6 @@
                     }
                 }
             },
-            "zones": [
-                "1",
-                "2",
-                "3"
-            ],
             "tags": {
             },
             "properties": {
@@ -343,7 +338,7 @@
                         "name": "apw-frontend-ip-configuration",
                         "properties": {
                             "PublicIPAddress": {
-                                "id": "[resourceId(subscription().subscriptionId,variables('vNetResourceGroup'),'Microsoft.Network/publicIpAddresses','pip-online-aue-00')]"
+                                "id": "[resourceId(subscription().subscriptionId,variables('vNetResourceGroup'),'Microsoft.Network/publicIpAddresses','pip-online-ause-00')]"
                             }
                         }
                     }
@@ -377,7 +372,7 @@
                 ],
                 "probes": [
                     {
-                        "name": "probe-bu0001a0008-00.aks-ingress.contoso.com",
+                        "name": "probe-online-ause.aks-ingress.contoso.com",
                         "properties": {
                             "protocol": "Https",
                             "path": "/favicon.ico",
@@ -393,11 +388,11 @@
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "bu0001a0008-00.aks-ingress.contoso.com",
+                        "name": "online-ause.aks-ingress.contoso.com",
                         "properties": {
                             "backendAddresses": [
                                 {
-                                    "fqdn": "bu0001a0008-00.aks-ingress.contoso.com"
+                                    "fqdn": "online-ause.aks-ingress.contoso.com"
                                 }
                             ]
                         }
@@ -413,7 +408,7 @@
                             "pickHostNameFromBackendAddress": true,
                             "requestTimeout": 20,
                             "probe": {
-                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('agwName')),'/probes/probe-bu0001a0008-00.aks-ingress.contoso.com')]"
+                                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('agwName')),'/probes/probe-online-ause.aks-ingress.contoso.com')]"
                             },
                             "trustedRootCertificates": [
                                 {
@@ -437,7 +432,7 @@
                             "sslCertificate": {
                                 "id": "[concat(variables('apwResourceId'), '/sslCertificates/', variables('agwName'), '-ssl-certificate')]"
                             },
-                            "hostName": "online-aue.australiaeast.cloudapp.azure.com",
+                            "hostName": "online-ause.australiasoutheast.cloudapp.azure.com",
                             "hostNames": [
                             ],
                             "requireServerNameIndication": true
@@ -453,7 +448,7 @@
                                 "id": "[concat(variables('apwResourceId'), '/httpListeners/listener-https')]"
                             },
                             "backendAddressPool": {
-                                "id": "[concat(variables('apwResourceId'), '/backendAddressPools/bu0001a0008-00.aks-ingress.contoso.com')]"
+                                "id": "[concat(variables('apwResourceId'), '/backendAddressPools/online-ause.aks-ingress.contoso.com')]"
                             },
                             "backendHttpSettings": {
                                 "id": "[concat(variables('apwResourceId'), '/backendHttpSettingsCollection/aks-ingress-contoso-backendpool-httpsettings')]"
@@ -767,7 +762,7 @@
                 "agentPoolProfiles": [
                     {
                         "name": "npsystem",
-                        "count": 3,
+                        "count": 2,
                         "vmSize": "Standard_B2s",
                         "osDiskSizeGB": 512,
                         "osType": "Linux",
@@ -781,16 +776,11 @@
                         "scaleSetEvictionPolicy": "Delete",
                         "orchestratorVersion": "[parameters('kubernetesVersion')]",
                         "enableNodePublicIP": false,
-                        "maxPods": 30,
-                        "availabilityZones": [
-                            "1",
-                            "2",
-                            "3"
-                        ]
+                        "maxPods": 30
                     },
                     {
                         "name": "npuser01",
-                        "count": 3,
+                        "count": 2,
                         "vmSize": "Standard_B2s",
                         "osDiskSizeGB": 512,
                         "osType": "Linux",
@@ -804,12 +794,7 @@
                         "scaleSetEvictionPolicy": "Delete",
                         "orchestratorVersion": "[parameters('kubernetesVersion')]",
                         "enableNodePublicIP": false,
-                        "maxPods": 30,
-                        "availabilityZones": [
-                            "1",
-                            "2",
-                            "3"
-                        ]
+                        "maxPods": 30
                     }
                 ],
                 "servicePrincipalProfile": {
