@@ -162,6 +162,7 @@ metadata:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-clusteringressservices"
+    service.beta.kubernetes.io/azure-dns-label-name: bikeonline-aueast    
 spec:
   type: LoadBalancer
   loadBalancerIP: 10.240.4.4
