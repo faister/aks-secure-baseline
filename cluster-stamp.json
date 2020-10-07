@@ -2,6 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "0.0.0.3",
     "parameters": {
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
+        },        
         "targetVnetResourceId": {
             "type": "string",
             "metadata": {
@@ -40,7 +44,7 @@
             }
         },
         "location": {
-            "defaultValue": "eastus2",
+            "defaultValue": "australiaeast",
             "type": "string",
             "allowedValues": [
                 "centralus",
@@ -52,14 +56,15 @@
                 "uksouth",
                 "westeurope",
                 "japaneast",
-                "southeastasia"
+                "southeastasia",
+                "australiaeast"
             ],
             "metadata": {
                 "description": "AKS Service, Node Pool, and supporting services (KeyVault, App Gateway, etc) region.  The network team maintains this approved regional list which is a subset of zones with Availability Zone support."
             }
         },
         "geoRedundancyLocation": {
-            "defaultValue": "centralus",
+            "defaultValue": "australiasoutheast",
             "type": "string",
             "allowedValues": [
                 "eastus2",
@@ -77,14 +82,16 @@
                 "francecentral",
                 "uksouth",
                 "japaneast",
-                "southeastasia"
+                "southeastasia",
+                "australiaeast",
+                "australiasoutheast"
             ],
             "metadata": {
                 "description": "For Azure resources that support native geo-redunancy, provide the location the redundant service will have its secondary. Should be different than the location parameter and ideally should be a paired region - https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions. This region does not need to support availability zones."
             }
         },
         "kubernetesVersion": {
-            "defaultValue": "1.17.7",
+            "defaultValue": "1.18.8",
             "type": "string"
         }
     },
@@ -96,7 +103,7 @@
         "virtualMachineContributorRole": "[concat(subscription().Id, '/providers/Microsoft.Authorization/roleDefinitions/9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
         "readerRole": "[concat(subscription().Id, '/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
 
-        "subRgUniqueString": "[uniqueString('aks', subscription().subscriptionId, resourceGroup().id)]",
+        "subRgUniqueString": "[uniqueString('aks', subscription().subscriptionId, resourceGroup().id, parameters('utcValue'))]",
 
         "nodeResourceGroupName": "[concat('rg-', variables('clusterName'), '-nodepools')]",
         "clusterName": "[concat('aks-', variables('subRgUniqueString'))]",
@@ -760,7 +767,7 @@
                     {
                         "name": "npsystem",
                         "count": 3,
-                        "vmSize": "Standard_DS2_v2",
+                        "vmSize": "Standard_B2s",
                         "osDiskSizeGB": 512,
                         "osType": "Linux",
                         "minCount": 3,
@@ -783,7 +790,7 @@
                     {
                         "name": "npuser01",
                         "count": 2,
-                        "vmSize": "Standard_DS3_v2",
+                        "vmSize": "Standard_B2s",
                         "osDiskSizeGB": 512,
                         "osType": "Linux",
                         "minCount": 2,
